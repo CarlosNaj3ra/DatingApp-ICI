@@ -10,3 +10,7 @@ builder.Services.AddDbContext<DataContext>(opt =>
 });
 
 var app = builder.Build();
+
+app.MapControllers();
+
+app.Run();
