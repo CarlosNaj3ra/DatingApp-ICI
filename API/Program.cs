@@ -1,3 +1,4 @@
+using System.Text;
 using API.Data;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,7 +19,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => 
     {
         var tokenKey = builder.Configuration["TokenKey"]
-            ?? throw new ArgumentNullException(nameof(builder.Configuration["TokenKey"]));
+            ?? throw new ArgumentNullException("TokenKey");
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
