@@ -5,8 +5,8 @@ import { Component, inject } from '@angular/core';
   selector: 'app-test-errors',
   standalone: true,
   imports: [],
-  templateUrl: './test-errors.component.html',
-  styleUrl: './test-errors.component.css'
+  templateUrl: './test-error.component.html',
+  styleUrl: './test-error.component.css'
 })
 export class TestErrorsComponent {
   baseUrl = "https://localhost:5001/api/";
