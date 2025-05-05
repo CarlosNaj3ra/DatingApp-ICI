@@ -1,8 +1,11 @@
 namespace API.DataEntities;
 
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 [Table("Photos")]
+[ExcludeFromCodeCoverage]
+
 public class Photo
 {
     public int Id { get; set; }
