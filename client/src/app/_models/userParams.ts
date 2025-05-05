@@ -5,7 +5,7 @@ import { User } from "./user";
      minAge = 18;
      maxAge = 100;
      pageNumber = 1;
-     pageSize = 12;
+     pageSize = 3;
      orderBy = "lastActive";
 
 
