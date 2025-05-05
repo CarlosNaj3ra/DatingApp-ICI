@@ -1,70 +1,46 @@
-<div class="container mt-3">
-    <div class="d-flex">
-        <div class="btn-group">
-            <button class="btn btn-primary" btnRadio="unread"
-                [(ngModel)]="container" (click)="loadMessages()">Unread
-            </button>
-            <button class="btn btn-primary" btnRadio="inbox"
-                [(ngModel)]="container" (click)="loadMessages()">Inbox
-            </button>
-            <button class="btn btn-primary" btnRadio="outbox"
-                [(ngModel)]="container" (click)="loadMessages()">Outbox
-            </button>
-        </div>
-    </div>
-</div>
+import { Component, inject, OnInit } from '@angular/core';
+import { MessagesService } from '../_services/messages.service';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { FormsModule } from '@angular/forms';
+import { TimeagoModule } from 'ngx-timeago';
+import { Message } from '../_models/message';
+import { RouterModule } from '@angular/router';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
-@if (!messagesService.paginatedResult()?.items) {
-    <h3>No messages :(</h3>
-} @else {
-    <table class="table table-hover mt-3" style="cursor: pointer;">
-        <thead>
-            <tr>
-                <th style="width: 40%">Message</th>
-                <th style="width: 20%">From/To</th>
-                <th style="width: 20%">Sent/Received</th>
-                <th style="width: 20%"></th>
-            </tr>
-        </thead>
-        <tbody class="align-middle">
-            @for (message of messagesService.paginatedResult()?.items; track message.id) {
-                <tr routerLink="{{getRoute(message)}}">
-                    <td>{{message.content}}</td>
-                    <td>
-                        <div>
-                            <img class="rounded-circle"
-                                [src]="container === 'Outbox'
-                                    ? (message.recipientPhotoUrl || './assets/user.png')
-                                    : (message.senderPhotoUrl || './assets/user.png')"
-                                alt="User photo">
-                            <strong>
-                                {{container === 'Outbox'
-                                    ? message.recipientUsername
-                                    : message.senderUsername}}
-                            </strong>
-                        </div>
-                    </td>
-                    <td>{{message.messageSent | timeago}}</td>
-                    <td><button class="btn btn-danger">Delete</button></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+@Component({
+  selector: 'app-messages',
+  standalone: true,
+  imports: [ButtonsModule, FormsModule, TimeagoModule, RouterModule, PaginationModule],
+  templateUrl: './messages.component.html',
+  styleUrl: './messages.component.css'
+})
+export class MessagesComponent implements OnInit {
+  messagesService = inject(MessagesService);
+  container = "Inbox";
+  pageNumber = 1;
+  pageSize = 10;
 
-@if (messagesService.paginatedResult()?.pagination) {
-    <div class="d-flex justify-content-center">
-        <pagination
-            [boundaryLinks]="true"
-            [totalItems]="messagesService.paginatedResult()?.pagination!.totalItems"
-            [itemsPerPage]="messagesService.paginatedResult()?.pagination!.itemsPerPage"
-            (pageChanged)="pageChanged($event)"
-            [(ngModel)]="messagesService.paginatedResult()?.pagination!.currentPage"
-            [maxSize]="10"
-            previousText="&lsaquo;"
-            nextText="&rsaquo;"
-            firstText="&laquo;"
-            lastText="&raquo;">
-        </pagination>
-    </div>
+  ngOnInit(): void {
+    this.loadMessages();
+  }
+
+  loadMessages() {
+    this.messagesService.getMessages(this.pageNumber, this.pageSize, this.container);
+  }
+
+  getRoute(message: Message) {
+  // if (this.container === "outbox") return `/members/${message.recipientUsername}`;
+  // else return `/members/${message.senderUsername}`;
+    return this.container === "Outbox"
+      ? `/members/${message.recipientUsername}`
+      : `/members/${message.senderUsername}`;
+  }
+
+  pageChanged(event: any) {
+    if (this.pageNumber !== event.page) {
+      this.pageNumber = event.page;
+      this.loadMessages();
+    }
+  }
+
 }
