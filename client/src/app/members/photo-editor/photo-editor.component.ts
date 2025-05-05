@@ -4,7 +4,7 @@ import { DecimalPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { FileUploader, FileUploadModule } from 'ng2-file-upload';
 import { AccountService } from '../../_services/account.service';
 import { environment } from '../../../environments/environment';
-import { MembersService } from '../../_services/members.service';
+import { MembersService } from '../../_services/member.service';
 import { Photo } from '../../_models/photo';
 
 @Component({
