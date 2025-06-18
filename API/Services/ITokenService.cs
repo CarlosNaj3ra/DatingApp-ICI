@@ -1,8 +1,7 @@
+namespace API.Services;
 using API.DataEntities;
 
-namespace API.Services;
-
-    public interface ITokenService
-    {
-        string CreateToken(AppUser user);
-    }
+public interface ITokenService
+{
+    public Task<string> CreateToken(AppUser user);
+}
